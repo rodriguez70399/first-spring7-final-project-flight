@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.jmruirod.firstspring7finalprojectflight.dao.FlightDao;
+import es.jmruirod.firstspring7finalprojectflight.exception.EmptyFlightListException;
+import es.jmruirod.firstspring7finalprojectflight.exception.FlightNotFoundException;
 import es.jmruirod.firstspring7finalprojectflight.model.Flight;
 
 @Service
@@ -17,6 +19,13 @@ public class FlightServiceInterfaceImplemented implements FlightServiceInterface
     @Override
     public List<Flight> findByAvailableSeats(int seats) 
     {
+        List<Flight> flights = this.flightDao.findByAvailableSeatsGreaterThan(seats);
+
+        if (flights.isEmpty()) 
+        {
+            throw new EmptyFlightListException();
+        }
+
         return this.flightDao.findByAvailableSeatsGreaterThan(seats);
     }
 
@@ -24,6 +33,12 @@ public class FlightServiceInterfaceImplemented implements FlightServiceInterface
     public void updateAvailableSeats(long id, int availableSeats) 
     {
         Flight flight = this.flightDao.findById(id).orElse(null);
+
+        if (flight == null) 
+        {
+            throw new FlightNotFoundException(id);
+        }
+        
         flight.setAvailableSeats(availableSeats);
         this.flightDao.save(flight);
     }
