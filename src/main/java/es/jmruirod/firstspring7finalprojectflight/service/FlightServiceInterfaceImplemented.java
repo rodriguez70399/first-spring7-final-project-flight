@@ -17,8 +17,7 @@ public class FlightServiceInterfaceImplemented implements FlightServiceInterface
     @Override
     public List<Flight> findByAvailableSeats(int seats) 
     {
-        return this.flightDao.findByAvailableSeats(seats);
-        
+        return this.flightDao.findByAvailableSeatsGreaterThan(seats);
     }
 
     @Override

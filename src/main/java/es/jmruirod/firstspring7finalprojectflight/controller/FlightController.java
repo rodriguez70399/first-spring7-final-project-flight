@@ -18,8 +18,8 @@ public class FlightController
     @Autowired
     private FlightServiceInterface service;
 
-    @GetMapping(value = "flights", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Flight> findByAvailableSeats(int seats) 
+    @GetMapping(value = "flights/{seats}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Flight> findByAvailableSeats(@PathVariable int seats) 
     {
         return this.service.findByAvailableSeats(seats); 
     }
